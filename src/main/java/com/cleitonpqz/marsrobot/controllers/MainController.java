@@ -16,18 +16,16 @@ import java.io.IOException;
 public class MainController {
 
     private RobotManager robotManager;
-    private LandManager landManager;
 
     @Autowired
-    public MainController(RobotManager robotManager, LandManager landManager) {
+    public MainController(RobotManager robotManager) {
         this.robotManager = robotManager;
-        this.landManager = landManager;
     }
 
-//    @PostMapping("/mars/{movements}")
-    @GetMapping("/mars/{movements}")
+    @PostMapping("/mars/{movements}")
     public Robot movement(@PathVariable("movements") char[] movements) {
-        Land land = landManager.create(5, 5);
+        LandManager lm = (x, y) -> new Land(0, --x, 0, --y);
+        Land land = lm.create(5, 5);
         Robot robot = robotManager.start();
         robotManager.registerMovements(robot, movements);
         try {
